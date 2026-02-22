@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" Version="8.0.100" />
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3719.77" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Dreamine.Hybrid.BlazorApp\Dreamine.Hybrid.BlazorApp.csproj" />
+    <ProjectReference Include="..\Dreamine.Hybrid\Dreamine.Hybrid.csproj" />
+  </ItemGroup>
+
+</Project>
