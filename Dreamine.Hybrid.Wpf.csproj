@@ -7,7 +7,7 @@
 		<Nullable>enable</Nullable>
 
 		<PackageId>Dreamine.Hybrid.Wpf</PackageId>
-		<Version>1.0.0</Version>
+		<Version>1.0.2</Version>
 		<Authors>Dreamine Core Team</Authors>
 		<Company>Dreamine</Company>
 		<Description>WPF host integration layer for Dreamine Hybrid, including WebView-based embedding and desktop bootstrap support.</Description>
@@ -26,9 +26,13 @@
 		<PackageReference Include="Microsoft.AspNetCore.Components.WebView.Wpf" />
 		<PackageReference Include="Microsoft.Web.WebView2" />
 	</ItemGroup>
+	
+	
+	<ItemGroup>
+		<FrameworkReference Include="Microsoft.AspNetCore.App" />
+	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\Hybrid.BlazorApp\Dreamine.Hybrid.BlazorApp.csproj" />
 		<ProjectReference Include="..\Hybrid\Dreamine.Hybrid.csproj" />
 	</ItemGroup>
 
