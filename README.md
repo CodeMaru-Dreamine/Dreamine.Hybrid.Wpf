@@ -61,7 +61,7 @@ If you want to:
 
 **Project references:**
 - `Dreamine.Hybrid` — Core interfaces (e.g. `IHybridMessageBus`)
-- `Dreamine.Hybrid.BlazorApp` — Blazor app entry point and ViewModel
+- Your Blazor component project — the root component type used by `HybridHostControl`
 
 ---
 
@@ -151,7 +151,7 @@ public partial class App
 ```
 
 > `AddDreamineHybridWpf()` internally calls `AddWpfBlazorWebView()` and registers:
-> `IHybridMessageBus → InMemoryHybridMessageBus` (singleton), `IndexViewModel` (singleton).
+> `IHybridMessageBus → InMemoryHybridMessageBus` (singleton). In Debug builds, it also enables BlazorWebView developer tools.
 
 ---
 
@@ -184,7 +184,7 @@ public partial class MainWindow
 
         HybridHost.HostPage = "wwwroot/index.html";
         HybridHost.RootSelector = "#app";
-        HybridHost.RootComponentType = typeof(Dreamine.Hybrid.BlazorApp.App);
+        HybridHost.RootComponentType = typeof(MyBlazorApp.App);
         HybridHost.Services = ((App)System.Windows.Application.Current).Services;
     }
 }

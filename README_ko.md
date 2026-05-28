@@ -62,7 +62,7 @@ Dreamine 아키텍처의 "WPF Shell + Blazor 화면" 조합을 **명시적(Expli
 
 **프로젝트 참조:**
 - `Dreamine.Hybrid` — 코어 인터페이스 (예: `IHybridMessageBus`)
-- `Dreamine.Hybrid.BlazorApp` — Blazor 앱 진입점 및 ViewModel
+- 사용자의 Blazor 컴포넌트 프로젝트 — `HybridHostControl`에 전달할 루트 컴포넌트 타입
 
 ---
 
@@ -152,7 +152,7 @@ public partial class App
 ```
 
 > `AddDreamineHybridWpf()` 내부에서 `AddWpfBlazorWebView()` 호출 및  
-> `IHybridMessageBus → InMemoryHybridMessageBus` (싱글톤), `IndexViewModel` (싱글톤) 등록을 수행합니다.
+> `IHybridMessageBus → InMemoryHybridMessageBus` (싱글톤) 등록을 수행합니다. Debug 빌드에서는 BlazorWebView 개발자 도구도 활성화합니다.
 
 ---
 
@@ -185,7 +185,7 @@ public partial class MainWindow
 
         HybridHost.HostPage = "wwwroot/index.html";
         HybridHost.RootSelector = "#app";
-        HybridHost.RootComponentType = typeof(Dreamine.Hybrid.BlazorApp.App);
+        HybridHost.RootComponentType = typeof(MyBlazorApp.App);
         HybridHost.Services = ((App)System.Windows.Application.Current).Services;
     }
 }
