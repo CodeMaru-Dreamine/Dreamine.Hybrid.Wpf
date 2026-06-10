@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 
 namespace Dreamine.Hybrid.Wpf.Hosting
@@ -9,9 +9,24 @@ namespace Dreamine.Hybrid.Wpf.Hosting
     public sealed class DreamineBlazorServerHostOptions
     {
         /// <summary>
-        /// \brief Gets or sets the localhost port used by the embedded Blazor Server host.
+        /// \brief Gets or sets the port used by the embedded Blazor Server host.
         /// </summary>
         public int Port { get; set; } = 5000;
+
+        /// <summary>
+        /// \brief Gets the unique ID for the current in-process server instance.
+        /// </summary>
+        public string InstanceId { get; } = Guid.NewGuid().ToString("N");
+
+        /// <summary>
+        /// \brief Gets or sets a value indicating whether Kestrel should listen on every network interface.
+        /// </summary>
+        public bool ListenAnyIp { get; set; }
+
+        /// <summary>
+        /// \brief Gets or sets the local host name used when <see cref="ListenAnyIp" /> is false.
+        /// </summary>
+        public string Host { get; set; } = "localhost";
 
         /// <summary>
         /// \brief Gets or sets the content root path used by the embedded Blazor Server host.

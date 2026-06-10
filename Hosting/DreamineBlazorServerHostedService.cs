@@ -1,12 +1,15 @@
-﻿using Dreamine.Hybrid.Interfaces;
+using Dreamine.Hybrid.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.StaticWebAssets;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
@@ -70,14 +73,45 @@ namespace Dreamine.Hybrid.Wpf.Hosting
 
             builder.WebHost.ConfigureKestrel(options =>
             {
+                if (_options.ListenAnyIp)
+                {
+                    options.ListenAnyIP(_options.Port);
+                    return;
+                }
+
+                if (string.Equals(_options.Host, "localhost", StringComparison.OrdinalIgnoreCase))
+                {
+                    options.ListenLocalhost(_options.Port);
+                    return;
+                }
+
+                if (IPAddress.TryParse(_options.Host, out IPAddress? address))
+                {
+                    options.Listen(address, _options.Port);
+                    return;
+                }
+
                 options.ListenLocalhost(_options.Port);
             });
 
             WebApplication app = builder.Build();
 
             app.UseStaticFiles();
+            app.Use(async (context, next) =>
+            {
+                if (TryGetPublishedIndexPath(app.Environment.ContentRootPath, context.Request, out string? indexPath))
+                {
+                    context.Response.ContentType = "text/html; charset=utf-8";
+                    await context.Response.SendFileAsync(indexPath!);
+                    return;
+                }
+
+                await next();
+            });
             app.UseRouting();
             app.UseAntiforgery();
+
+            app.MapGet("/_dreamine/instance", () => _options.InstanceId);
 
             app.MapRazorComponents<TRootComponent>()
                .AddInteractiveServerRenderMode();
@@ -142,6 +176,54 @@ namespace Dreamine.Hybrid.Wpf.Hosting
             {
                 services.AddScoped(type);
             }
+        }
+
+        private static bool TryGetPublishedIndexPath(string contentRootPath, HttpRequest request, out string? indexPath)
+        {
+            indexPath = null;
+
+            if (!HttpMethods.IsGet(request.Method) && !HttpMethods.IsHead(request.Method))
+            {
+                return false;
+            }
+
+            string? requestPath = request.Path.Value;
+            if (string.IsNullOrWhiteSpace(requestPath) ||
+                string.Equals(requestPath, "/", StringComparison.Ordinal) ||
+                !requestPath.EndsWith("/", StringComparison.Ordinal))
+            {
+                return false;
+            }
+
+            string[] segments = requestPath
+                .Trim('/')
+                .Split('/', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+            if (segments.Length == 0 ||
+                segments.Any(segment => segment is "." or ".." || Path.GetFileName(segment) != segment))
+            {
+                return false;
+            }
+
+            string webRoot = Path.GetFullPath(Path.Combine(contentRootPath, "wwwroot"));
+            string targetDirectory = webRoot;
+            foreach (string segment in segments)
+            {
+                targetDirectory = Path.Combine(targetDirectory, segment);
+            }
+
+            string candidate = Path.GetFullPath(Path.Combine(targetDirectory, "index.html"));
+            string webRootPrefix = webRoot.EndsWith(Path.DirectorySeparatorChar.ToString(), StringComparison.Ordinal)
+                ? webRoot
+                : webRoot + Path.DirectorySeparatorChar;
+
+            if (!candidate.StartsWith(webRootPrefix, StringComparison.OrdinalIgnoreCase) || !File.Exists(candidate))
+            {
+                return false;
+            }
+
+            indexPath = candidate;
+            return true;
         }
     }
 }
