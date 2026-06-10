@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -6,12 +6,12 @@ using System;
 namespace Dreamine.Hybrid.Wpf.Hosting
 {
     /// <summary>
-    /// \brief Provides service registration extensions for Dreamine Blazor Server hosting.
+    /// Provides service registration extensions for Dreamine Blazor Server hosting.
     /// </summary>
     public static class DreamineBlazorServerServiceCollectionExtensions
     {
         /// <summary>
-        /// \brief Registers a Blazor Server host that runs inside the WPF process.
+        /// Registers a Blazor Server host that runs inside the WPF process.
         /// </summary>
         /// <typeparam name="TRootComponent">The root Razor component type.</typeparam>
         /// <param name="services">The service collection.</param>

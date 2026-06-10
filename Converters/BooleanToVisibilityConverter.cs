@@ -1,5 +1,5 @@
-﻿/// \file BooleanToVisibilityConverter.cs
-/// \brief bool ↔ Visibility 변환기 (디자인 타임 지원)
+/// \file BooleanToVisibilityConverter.cs
+/// bool ↔ Visibility 변환기 (디자인 타임 지원)
 using System;
 using System.Globalization;
 using System.Windows;

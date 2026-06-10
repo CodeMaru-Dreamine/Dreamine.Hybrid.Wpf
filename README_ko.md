@@ -1,6 +1,6 @@
 <!--!
 \file README_ko.md
-\brief Dreamine.Hybrid.Wpf - WPF + BlazorWebView(WebView2) 하이브리드 호스팅 인프라.
+Dreamine.Hybrid.Wpf - WPF + BlazorWebView(WebView2) 하이브리드 호스팅 인프라.
 \details 아키텍처/설치/퀵스타트/컴포넌트 레퍼런스/진단 포인트를 정리합니다.
 \author Dreamine
 \date 2026-02-23
@@ -47,7 +47,7 @@ Dreamine 아키텍처의 "WPF Shell + Blazor 화면" 조합을 **명시적(Expli
 - **명시적 와이어링(MVVM 친화)**: `HostPage`, `RootComponentType`, `RootSelector`, `Services`
 - **DI 확장 메서드**: `AddDreamineHybridWpf()` 한 번 호출로 필수 서비스 일괄 등록
 - **디자인 타임 안전**: Visual Studio 디자이너에서 초기화를 자동 회피
-- **WebView2 진단 / 안전 캐시 경로** 유틸 제공 (한글 경로 문제 해결)
+- **내부 WebView2 진단 / 안전 캐시 경로** 적용 (한글 경로 문제 완화)
 
 ---
 
@@ -211,18 +211,6 @@ public partial class MainWindow
 
 ---
 
-### `WebView2Initializer`
-
-WebView2 저수준 설정을 위한 정적 유틸리티 클래스입니다:
-
-| 메서드 | 설명 |
-|---|---|
-| `GetSafeUserDataFolder()` | `%LocalAppData%\Dreamine\WebView2Cache` 경로 반환 (ASCII 전용, 자동 생성) |
-| `CreateConfiguredWebView2()` | 안전 캐시 경로 + 진단 이벤트 로깅이 적용된 `WebView2` 인스턴스 생성 |
-| `ShowOfflineMessageAsync(webView, url)` | Blazor 서버 연결 불가 시 스타일된 오프라인 안내 HTML 표시 |
-
----
-
 ### `BooleanToVisibilityConverter`
 
 표준 `bool → Visibility` 변환기입니다. XAML에서 싱글톤으로 사용:
@@ -261,10 +249,9 @@ Visual Studio 디자이너에서 WebView2/Blazor 초기화가 동작하면 크�
 ## WebView2 안전 캐시 경로 / 진단 로그
 
 사용자 프로필 경로에 한글 / 특수문자가 포함되어 WebView2가 문제를 일으키는 경우가 있습니다.  
-`WebView2Initializer`를 통해 **ASCII-only 캐시 경로**를 강제할 수 있습니다:
+이 패키지는 WebView2 초기화 헬퍼를 internal로 유지해서 WebView2 세부 설정이 public API로 굳어지지 않게 합니다. 번들 호스트는 `%LocalAppData%\Dreamine\WebView2Cache` 아래 ASCII-safe 캐시 경로를 사용하고, 초기화/네비게이션 진단을 `Debug.WriteLine`으로 남깁니다.
 
-- `WebView2Initializer.GetSafeUserDataFolder()` — `%LocalAppData%` 하위에 ASCII 안전 경로 강제 지정
-- `WebView2Initializer.CreateConfiguredWebView2()` — `Debug.WriteLine` 기반 초기화 / 네비게이션 진단 로그 포함
+직접 `WebView2`를 저수준으로 호스팅해야 한다면 애플리케이션 레이어에서 `CoreWebView2CreationProperties.UserDataFolder`를 명시적으로 설정하세요.
 
 ---
 

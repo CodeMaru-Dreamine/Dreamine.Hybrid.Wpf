@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 namespace Dreamine.Hybrid.Wpf.Hosting
 {
     /// <summary>
-    /// \brief Hosts a Blazor Server application inside the WPF process.
+    /// Hosts a Blazor Server application inside the WPF process.
     /// </summary>
     /// <typeparam name="TRootComponent">The root Razor component type.</typeparam>
     public sealed class DreamineBlazorServerHostedService<TRootComponent> : IHostedService
@@ -29,7 +29,7 @@ namespace Dreamine.Hybrid.Wpf.Hosting
         private IHost? _webHost;
 
         /// <summary>
-        /// \brief Initializes a new instance of the <see cref="DreamineBlazorServerHostedService{TRootComponent}"/> class.
+        /// Initializes a new instance of the <see cref="DreamineBlazorServerHostedService{TRootComponent}"/> class.
         /// </summary>
         /// <param name="rootServiceProvider">The WPF root service provider.</param>
         /// <param name="messageBus">The shared hybrid message bus.</param>
@@ -141,7 +141,7 @@ namespace Dreamine.Hybrid.Wpf.Hosting
         }
 
         /// <summary>
-        /// \brief Registers services shared from the WPF host service provider.
+        /// Registers services shared from the WPF host service provider.
         /// </summary>
         /// <param name="services">The Blazor Server service collection.</param>
         private void RegisterSharedServices(IServiceCollection services)
@@ -156,12 +156,21 @@ namespace Dreamine.Hybrid.Wpf.Hosting
                         $"Shared service '{serviceType.FullName}' was not found in the root service provider.");
                 }
 
+                if (!_options.AllowDisposableSharedServices &&
+                    (instance is IDisposable || instance is IAsyncDisposable))
+                {
+                    throw new InvalidOperationException(
+                        $"Shared service '{serviceType.FullName}' implements IDisposable/IAsyncDisposable. " +
+                        "Blazor Server would own disposal for services registered into its container. " +
+                        "Share a non-disposable facade or explicitly enable AllowDisposableSharedServices when that ownership is intended.");
+                }
+
                 services.AddSingleton(serviceType, instance);
             }
         }
 
         /// <summary>
-        /// \brief Registers public ViewModel classes from the specified assembly.
+        /// Registers public ViewModel classes from the specified assembly.
         /// </summary>
         /// <param name="services">The service collection.</param>
         /// <param name="assembly">The assembly to scan.</param>

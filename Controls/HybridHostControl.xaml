@@ -6,7 +6,7 @@
              xmlns:blazor="clr-namespace:Microsoft.AspNetCore.Components.WebView.Wpf;assembly=Microsoft.AspNetCore.Components.WebView.Wpf"
              mc:Ignorable="d">
     <!--! \file HybridHostControl.xaml
-          \brief WPF에서 BlazorWebView를 호스팅하는 컨트롤. -->
+          WPF에서 BlazorWebView를 호스팅하는 컨트롤입니다. -->
     <Grid>
         <blazor:BlazorWebView x:Name="BlazorView" />
     </Grid>

@@ -1,5 +1,5 @@
 /// \file ServiceCollectionExtensions.cs
-/// \brief Dreamine 하이브리드(WPF) 서비스 등록 확장 메서드.
+/// Dreamine 하이브리드(WPF) 서비스 등록 확장 메서드.
 /// \author Dreamine
 /// \date 2026-01-28
 /// \version 1.0.0
@@ -13,12 +13,12 @@ using System;
 namespace Dreamine.Hybrid.Wpf.DependencyInjection
 {
     /// <summary>
-    /// \brief Provides service registration extension methods for Dreamine Hybrid WPF.
+    /// Provides service registration extension methods for Dreamine Hybrid WPF.
     /// </summary>
     public static class ServiceCollectionExtensions
     {
         /// <summary>
-        /// \brief Registers the default services required to run Dreamine Hybrid WPF.
+        /// Registers the default services required to run Dreamine Hybrid WPF.
         /// </summary>
         /// <param name="services">The service collection.</param>
         /// <returns>The same service collection instance for chaining.</returns>

@@ -4,43 +4,51 @@ using System.Collections.Generic;
 namespace Dreamine.Hybrid.Wpf.Hosting
 {
     /// <summary>
-    /// \brief Represents options for hosting a Blazor Server endpoint inside a WPF process.
+    /// Represents options for hosting a Blazor Server endpoint inside a WPF process.
     /// </summary>
     public sealed class DreamineBlazorServerHostOptions
     {
         /// <summary>
-        /// \brief Gets or sets the port used by the embedded Blazor Server host.
+        /// Gets or sets the port used by the embedded Blazor Server host.
         /// </summary>
         public int Port { get; set; } = 5000;
 
         /// <summary>
-        /// \brief Gets the unique ID for the current in-process server instance.
+        /// Gets the unique ID for the current in-process server instance.
         /// </summary>
         public string InstanceId { get; } = Guid.NewGuid().ToString("N");
 
         /// <summary>
-        /// \brief Gets or sets a value indicating whether Kestrel should listen on every network interface.
+        /// Gets or sets a value indicating whether Kestrel should listen on every network interface.
         /// </summary>
         public bool ListenAnyIp { get; set; }
 
         /// <summary>
-        /// \brief Gets or sets the local host name used when <see cref="ListenAnyIp" /> is false.
+        /// Gets or sets the local host name used when <see cref="ListenAnyIp" /> is false.
         /// </summary>
         public string Host { get; set; } = "localhost";
 
         /// <summary>
-        /// \brief Gets or sets the content root path used by the embedded Blazor Server host.
+        /// Gets or sets the content root path used by the embedded Blazor Server host.
         /// </summary>
         public string ContentRootPath { get; set; } = AppContext.BaseDirectory;
 
         /// <summary>
-        /// \brief Gets or sets a value indicating whether public ViewModel classes should be automatically registered.
+        /// Gets or sets a value indicating whether public ViewModel classes should be automatically registered.
         /// </summary>
         public bool AutoRegisterViewModels { get; set; } = true;
 
         /// <summary>
-        /// \brief Gets service types that should be shared from the WPF host service provider to the Blazor Server host.
+        /// Gets service types that should be shared from the WPF host service provider to the Blazor Server host.
         /// </summary>
         public IList<Type> SharedServiceTypes { get; } = new List<Type>();
+
+        /// <summary>
+        /// Gets or sets a value indicating whether disposable shared service instances may be registered in the Blazor Server container.
+        /// </summary>
+        /// <remarks>
+        /// Keep this disabled unless the shared instance is safe for the Blazor Server host to dispose when it stops.
+        /// </remarks>
+        public bool AllowDisposableSharedServices { get; set; }
     }
 }

@@ -1,6 +1,6 @@
 <!--!
 \file README.md
-\brief Dreamine.Hybrid.Wpf - WPF + BlazorWebView(WebView2) hybrid hosting infrastructure.
+Dreamine.Hybrid.Wpf - WPF + BlazorWebView(WebView2) hybrid hosting infrastructure.
 \details This README documents architecture, installation, and quick-start usage.
 \author Dreamine
 \date 2026-02-23
@@ -46,7 +46,7 @@ If you want to:
 - **Explicit wiring** (MVVM-friendly): `HostPage`, `RootComponentType`, `RootSelector`, `Services`
 - **DI helper**: `AddDreamineHybridWpf()` to register required services in one call
 - **Design-time safe**: avoids initializing BlazorWebView in Visual Studio designer
-- **WebView2 diagnostics & safe cache path** helper for non-ASCII user profile paths
+- **Internal WebView2 diagnostics & safe cache path** used by the bundled hosting flow
 
 ---
 
@@ -209,18 +209,6 @@ A WPF `UserControl` that wraps `BlazorWebView`. Configure via properties before 
 
 ---
 
-### `WebView2Initializer`
-
-Static utility for low-level WebView2 setup:
-
-| Method | Description |
-|---|---|
-| `GetSafeUserDataFolder()` | Returns `%LocalAppData%\Dreamine\WebView2Cache` (ASCII-only, auto-created) |
-| `CreateConfiguredWebView2()` | Creates a `WebView2` instance with safe cache path and diagnostic event logging |
-| `ShowOfflineMessageAsync(webView, url)` | Displays a styled offline warning page if the Blazor server is unreachable |
-
----
-
 ### `BooleanToVisibilityConverter`
 
 Standard `bool → Visibility` converter. Use via singleton in XAML:
@@ -256,10 +244,9 @@ This library avoids initialization inside the designer:
 
 ## WebView2 Safe Cache Path & Diagnostics
 
-If you hit issues with non-ASCII user profile paths (Korean, emoji, etc.), use:
+The package keeps its WebView2 initialization helper internal so WebView2-specific setup does not become part of the public API surface. The bundled host uses an ASCII-safe cache path under `%LocalAppData%\Dreamine\WebView2Cache` and writes initialization/navigation diagnostics through `Debug.WriteLine`.
 
-- `WebView2Initializer.GetSafeUserDataFolder()` — forces an ASCII-safe cache directory under `%LocalAppData%`
-- `WebView2Initializer.CreateConfiguredWebView2()` — creates a pre-configured instance with `Debug.WriteLine` diagnostics for init and navigation events
+For custom low-level `WebView2` hosting, configure `CoreWebView2CreationProperties.UserDataFolder` directly in the application layer.
 
 ---
 

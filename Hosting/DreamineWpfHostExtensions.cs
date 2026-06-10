@@ -1,4 +1,4 @@
-﻿using Dreamine.Hybrid.Wpf.Interfaces;
+using Dreamine.Hybrid.Wpf.Interfaces;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Windows;
@@ -6,12 +6,12 @@ using System.Windows;
 namespace Dreamine.Hybrid.Wpf.Hosting
 {
     /// <summary>
-    /// \brief Provides extension methods for running WPF applications with a Generic Host.
+    /// Provides extension methods for running WPF applications with a Generic Host.
     /// </summary>
     public static class DreamineWpfHostExtensions
     {
         /// <summary>
-        /// \brief Runs a WPF application using the specified Generic Host.
+        /// Runs a WPF application using the specified Generic Host.
         /// </summary>
         /// <typeparam name="TApplication">The WPF application type.</typeparam>
         /// <param name="host">The configured Generic Host.</param>

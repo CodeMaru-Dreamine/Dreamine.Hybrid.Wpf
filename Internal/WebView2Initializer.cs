@@ -1,5 +1,5 @@
-﻿/// \file WebView2Initializer.cs
-/// \brief WebView2 초기화/캐시 경로/진단 유틸리티.
+/// \file WebView2Initializer.cs
+/// WebView2 초기화/캐시 경로/진단 유틸리티.
 /// \details 다국어·특수문자 경로 문제를 회피하기 위해 ASCII 전용 LocalAppData 하위 경로를 사용.
 /// \author Dreamine
 /// \version 1.0.0
@@ -14,10 +14,10 @@ using System.Threading.Tasks;
 namespace Dreamine.Hybrid.Wpf.Internal
 {
 	/// \class WebView2Initializer
-	/// \brief WebView2 안전 초기화를 제공하는 정적 유틸 클래스
-	public static class WebView2Initializer
+	/// WebView2 안전 초기화를 제공하는 정적 유틸 클래스
+	internal static class WebView2Initializer
 	{
-		/// \brief WebView2 캐시 경로를 반환(ASCII Only)
+		/// WebView2 캐시 경로를 반환(ASCII Only)
 		public static string GetSafeUserDataFolder()
 		{
 			var basePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -26,7 +26,7 @@ namespace Dreamine.Hybrid.Wpf.Internal
 			return path;
 		}
 
-		/// \brief 캐시 경로가 지정된 WebView2 인스턴스를 생성
+		/// 캐시 경로가 지정된 WebView2 인스턴스를 생성
 		public static WebView2 CreateConfiguredWebView2()
 		{
 			var cachePath = GetSafeUserDataFolder();
@@ -60,7 +60,7 @@ namespace Dreamine.Hybrid.Wpf.Internal
 			return webView;
 		}
 
-		/// \brief 서버 오프라인 안내 HTML을 로드
+		/// 서버 오프라인 안내 HTML을 로드
 		public static async Task ShowOfflineMessageAsync(WebView2 webView, string url)
 		{
 			await webView.EnsureCoreWebView2Async();
