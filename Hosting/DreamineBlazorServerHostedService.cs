@@ -108,6 +108,11 @@ namespace Dreamine.Hybrid.Wpf.Hosting
 
                 await next();
             });
+
+            // 추가 정적 파일(업로드 데이터 등)을 UseRouting 이전에 등록해야
+            // Blazor catch-all 라우터보다 먼저 처리됩니다.
+            _options.ConfigurePipeline?.Invoke(app);
+
             app.UseRouting();
             app.UseAntiforgery();
 

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Builder;
 using System;
 using System.Collections.Generic;
 
@@ -50,5 +51,30 @@ namespace Dreamine.Hybrid.Wpf.Hosting
         /// Keep this disabled unless the shared instance is safe for the Blazor Server host to dispose when it stops.
         /// </remarks>
         public bool AllowDisposableSharedServices { get; set; }
+
+        /// <summary>
+        /// Optional callback invoked after the default pipeline (UseStaticFiles, UseRouting, UseAntiforgery)
+        /// is configured. Use this to add extra middleware, static file providers, etc.
+        /// </summary>
+        public Action<WebApplication>? ConfigurePipeline { get; set; }
+
+        /// <summary>
+        /// Adds a physical directory as an additional static file provider at the given request path.
+        /// </summary>
+        public DreamineBlazorServerHostOptions AddPhysicalStaticFiles(string physicalPath, string requestPath)
+        {
+            var prev = ConfigurePipeline;
+            ConfigurePipeline = app =>
+            {
+                prev?.Invoke(app);
+                System.IO.Directory.CreateDirectory(physicalPath);
+                app.UseStaticFiles(new Microsoft.AspNetCore.Builder.StaticFileOptions
+                {
+                    FileProvider = new Microsoft.Extensions.FileProviders.PhysicalFileProvider(physicalPath),
+                    RequestPath = requestPath
+                });
+            };
+            return this;
+        }
     }
 }
