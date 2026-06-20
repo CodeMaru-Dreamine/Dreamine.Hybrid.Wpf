@@ -65,6 +65,7 @@ namespace Dreamine.Hybrid.Wpf.Hosting
             builder.Services.AddSingleton(_messageBus);
 
             RegisterSharedServices(builder.Services);
+            _options.ConfigureServices?.Invoke(builder.Services);
 
             if (_options.AutoRegisterViewModels)
             {
