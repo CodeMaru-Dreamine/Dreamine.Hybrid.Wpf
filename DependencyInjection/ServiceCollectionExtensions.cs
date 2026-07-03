@@ -1,8 +1,8 @@
-/// \file ServiceCollectionExtensions.cs
-/// Dreamine 하이브리드(WPF) 서비스 등록 확장 메서드.
-/// \author Dreamine
-/// \date 2026-01-28
-/// \version 1.0.0
+// \file ServiceCollectionExtensions.cs
+// Dreamine 하이브리드(WPF) 서비스 등록 확장 메서드.
+// \author Dreamine
+// \date 2026-01-28
+// \version 1.0.0
 
 using Dreamine.Hybrid.Interfaces;
 using Dreamine.Hybrid.Messaging;

@@ -1,8 +1,8 @@
-/// \file WebView2Initializer.cs
-/// WebView2 초기화/캐시 경로/진단 유틸리티.
-/// \details 다국어·특수문자 경로 문제를 회피하기 위해 ASCII 전용 LocalAppData 하위 경로를 사용.
-/// \author Dreamine
-/// \version 1.0.0
+// \file WebView2Initializer.cs
+// WebView2 초기화/캐시 경로/진단 유틸리티.
+// \details 다국어·특수문자 경로 문제를 회피하기 위해 ASCII 전용 LocalAppData 하위 경로를 사용.
+// \author Dreamine
+// \version 1.0.0
 
 using Microsoft.Web.WebView2.Core;
 using Microsoft.Web.WebView2.Wpf;

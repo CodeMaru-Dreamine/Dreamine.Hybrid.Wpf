@@ -1,8 +1,8 @@
-/// \file HybridHostControl.xaml.cs
-/// WPF에서 BlazorWebView를 Embedded 형태로 호스팅하는 컨트롤.
-/// \author Dreamine
-/// \date 2026-01-28
-/// \version 1.0.0
+// \file HybridHostControl.xaml.cs
+// WPF에서 BlazorWebView를 Embedded 형태로 호스팅하는 컨트롤.
+// \author Dreamine
+// \date 2026-01-28
+// \version 1.0.0
 using Microsoft.AspNetCore.Components.WebView.Wpf;
 using System;
 using System.ComponentModel;
