@@ -66,6 +66,12 @@ namespace Dreamine.Hybrid.Wpf.Hosting
         public Action<WebApplication>? ConfigurePipeline { get; set; }
 
         /// <summary>
+        /// Optional callback invoked immediately after <c>UseRouting</c> and before <c>UseAntiforgery</c>.
+        /// Use this to plug in endpoint-routing-dependent middleware such as <c>UseAuthorization</c>.
+        /// </summary>
+        public Action<WebApplication>? ConfigurePipelineAfterRouting { get; set; }
+
+        /// <summary>
         /// Adds a physical directory as an additional static file provider at the given request path.
         /// </summary>
         public DreamineBlazorServerHostOptions AddPhysicalStaticFiles(string physicalPath, string requestPath)

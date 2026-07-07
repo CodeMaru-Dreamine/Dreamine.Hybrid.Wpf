@@ -115,6 +115,9 @@ namespace Dreamine.Hybrid.Wpf.Hosting
             _options.ConfigurePipeline?.Invoke(app);
 
             app.UseRouting();
+
+            _options.ConfigurePipelineAfterRouting?.Invoke(app);
+
             app.UseAntiforgery();
 
             app.MapGet("/_dreamine/instance", () => _options.InstanceId);
