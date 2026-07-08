@@ -7,7 +7,7 @@
 		<Nullable>enable</Nullable>
 
 		<PackageId>Dreamine.Hybrid.Wpf</PackageId>
-		<Version>1.0.2</Version>
+		<Version>1.0.3</Version>
 		<Authors>Dreamine Core Team</Authors>
 		<Company>Dreamine</Company>
 		<Description>WPF host integration layer for Dreamine Hybrid, including WebView-based embedding and desktop bootstrap support.</Description>
