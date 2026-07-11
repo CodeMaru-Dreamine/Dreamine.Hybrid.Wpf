@@ -2,6 +2,8 @@ using Dreamine.Hybrid.Wpf.Interfaces;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Windows;
+using System.Windows.Interop;
+using System.Windows.Media;
 
 namespace Dreamine.Hybrid.Wpf.Hosting
 {
@@ -10,6 +12,8 @@ namespace Dreamine.Hybrid.Wpf.Hosting
     /// </summary>
     public static class DreamineWpfHostExtensions
     {
+        private const string SoftwareRenderingEnvironmentVariable = "DREAMINE_WPF_SOFTWARE_RENDERING";
+
         /// <summary>
         /// Runs a WPF application using the specified Generic Host.
         /// </summary>
@@ -23,6 +27,7 @@ namespace Dreamine.Hybrid.Wpf.Hosting
                 throw new ArgumentNullException(nameof(host));
             }
 
+            ConfigureWpfRendering();
             host.StartAsync().GetAwaiter().GetResult();
 
             TApplication app = new();
@@ -32,19 +37,34 @@ namespace Dreamine.Hybrid.Wpf.Hosting
                 hostAwareApplication.SetServiceProvider(host.Services);
             }
 
-            app.Exit += async (_, _) =>
+            try
+            {
+                app.Run();
+            }
+            finally
             {
                 try
                 {
-                    await host.StopAsync();
+                    using var cts = new System.Threading.CancellationTokenSource(TimeSpan.FromSeconds(10));
+                    host.StopAsync(cts.Token).GetAwaiter().GetResult();
                 }
                 finally
                 {
                     host.Dispose();
                 }
-            };
+            }
+        }
 
-            app.Run();
+        private static void ConfigureWpfRendering()
+        {
+            var softwareRendering = Environment.GetEnvironmentVariable(SoftwareRenderingEnvironmentVariable);
+            if (!string.Equals(softwareRendering, "1", StringComparison.OrdinalIgnoreCase) &&
+                !string.Equals(softwareRendering, "true", StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
+            RenderOptions.ProcessRenderMode = RenderMode.SoftwareOnly;
         }
     }
 }

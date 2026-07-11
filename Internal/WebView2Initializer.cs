@@ -9,6 +9,7 @@ using Microsoft.Web.WebView2.Wpf;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Security.Principal;
 using System.Threading.Tasks;
 
 namespace Dreamine.Hybrid.Wpf.Internal
@@ -17,26 +18,66 @@ namespace Dreamine.Hybrid.Wpf.Internal
 	/// WebView2 안전 초기화를 제공하는 정적 유틸 클래스
 	internal static class WebView2Initializer
 	{
+		private const string LowResourceModeEnvironmentVariable = "DREAMINE_WEBVIEW2_LOW_RESOURCE_MODE";
+
 		/// WebView2 캐시 경로를 반환(ASCII Only)
 		public static string GetSafeUserDataFolder()
 		{
 			var basePath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-			var path = Path.Combine(basePath, "Dreamine", "WebView2Cache"); // e.g., C:\Users\...\AppData\Local\Dreamine\WebView2Cache
+			var processName = Process.GetCurrentProcess().ProcessName;
+			var integrity = IsAdministrator() ? "Admin" : "User";
+			var path = Path.Combine(basePath, "Dreamine", "WebView2Cache", processName, integrity);
 			Directory.CreateDirectory(path);
 			return path;
+		}
+
+		private static string GetAdditionalBrowserArguments()
+		{
+			var lowResourceMode = Environment.GetEnvironmentVariable(LowResourceModeEnvironmentVariable);
+			if (string.Equals(lowResourceMode, "0", StringComparison.OrdinalIgnoreCase) ||
+				string.Equals(lowResourceMode, "false", StringComparison.OrdinalIgnoreCase))
+			{
+				return string.Empty;
+			}
+
+			return string.Join(" ", new[]
+			{
+				"--disable-gpu",
+				"--disable-gpu-compositing",
+				"--disable-accelerated-2d-canvas",
+				"--disable-accelerated-video-decode",
+				"--disable-smooth-scrolling",
+				"--disable-features=CalculateNativeWinOcclusion,msWebOOUI,msPdfOOUI"
+			});
+		}
+
+		private static bool IsAdministrator()
+		{
+			try
+			{
+				using WindowsIdentity identity = WindowsIdentity.GetCurrent();
+				return new WindowsPrincipal(identity).IsInRole(WindowsBuiltInRole.Administrator);
+			}
+			catch
+			{
+				return false;
+			}
 		}
 
 		/// 캐시 경로가 지정된 WebView2 인스턴스를 생성
 		public static WebView2 CreateConfiguredWebView2()
 		{
 			var cachePath = GetSafeUserDataFolder();
+			var browserArguments = GetAdditionalBrowserArguments();
 			Debug.WriteLine($"[WebView2.CachePath] {cachePath}");
+			Debug.WriteLine($"[WebView2.Args] {(string.IsNullOrWhiteSpace(browserArguments) ? "(none)" : browserArguments)}");
 
 			var webView = new WebView2
 			{
 				CreationProperties = new CoreWebView2CreationProperties
 				{
-					UserDataFolder = cachePath
+					UserDataFolder = cachePath,
+					AdditionalBrowserArguments = browserArguments
 				}
 			};
 
@@ -63,8 +104,10 @@ namespace Dreamine.Hybrid.Wpf.Internal
 		/// 서버 오프라인 안내 HTML을 로드
 		public static async Task ShowOfflineMessageAsync(WebView2 webView, string url)
 		{
-			await webView.EnsureCoreWebView2Async();
-			webView.NavigateToString($@"
+			try
+			{
+				await webView.EnsureCoreWebView2Async();
+				webView.NavigateToString($@"
 <!doctype html>
 <html>
 <head><meta charset='utf-8'><title>Server Offline</title></head>
@@ -78,6 +121,11 @@ namespace Dreamine.Hybrid.Wpf.Internal
   </ul>
 </body>
 </html>");
+			}
+			catch (Exception ex)
+			{
+				Debug.WriteLine($"[WebView2.OfflineMessageFailed] {ex}");
+			}
 		}
 	}
 }

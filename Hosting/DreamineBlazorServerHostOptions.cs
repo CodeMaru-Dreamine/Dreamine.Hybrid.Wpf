@@ -54,6 +54,15 @@ namespace Dreamine.Hybrid.Wpf.Hosting
         public bool AllowDisposableSharedServices { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether the WPF shell should host an embedded WebView2 control.
+        /// </summary>
+        /// <remarks>
+        /// Set this to <c>false</c> to keep the in-process server running while opening the admin URL
+        /// in the user's default browser. This avoids machine-specific WebView2 rendering/input issues.
+        /// </remarks>
+        public bool UseEmbeddedWebView { get; set; } = true;
+
+        /// <summary>
         /// Optional callback invoked before the Blazor Server host is built.
         /// Use this to register Scoped or Transient services into the Blazor Server DI container.
         /// </summary>
