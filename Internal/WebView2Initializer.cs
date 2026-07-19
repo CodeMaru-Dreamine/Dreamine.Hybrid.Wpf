@@ -79,8 +79,8 @@ namespace Dreamine.Hybrid.Wpf.Internal
 		private static string GetAdditionalBrowserArguments()
 		{
 			var lowResourceMode = Environment.GetEnvironmentVariable(LowResourceModeEnvironmentVariable);
-			if (string.Equals(lowResourceMode, "0", StringComparison.OrdinalIgnoreCase) ||
-				string.Equals(lowResourceMode, "false", StringComparison.OrdinalIgnoreCase))
+			if (!string.Equals(lowResourceMode, "1", StringComparison.OrdinalIgnoreCase) &&
+				!string.Equals(lowResourceMode, "true", StringComparison.OrdinalIgnoreCase))
 			{
 				return string.Empty;
 			}
