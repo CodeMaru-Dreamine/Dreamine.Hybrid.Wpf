@@ -204,7 +204,9 @@ namespace Dreamine.Hybrid.Wpf.Hosting
                 if (TryGetPublishedIndexPath(app.Environment.ContentRootPath, context.Request, out string? indexPath))
                 {
                     context.Response.ContentType = "text/html; charset=utf-8";
-                    await context.Response.SendFileAsync(indexPath!);
+                    await context.Response.SendFileAsync(
+                        indexPath!,
+                        context.RequestAborted);
                     return;
                 }
 
