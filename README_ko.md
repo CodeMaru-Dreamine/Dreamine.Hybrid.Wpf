@@ -9,6 +9,20 @@ Dreamine.Hybrid.Wpf - WPF + BlazorWebView(WebView2) 하이브리드 호스팅 �
 
 # Dreamine.Hybrid.Wpf
 
+[![CI](https://github.com/CodeMaru-Dreamine/Dreamine.Hybrid.Wpf/actions/workflows/ci.yml/badge.svg)](https://github.com/CodeMaru-Dreamine/Dreamine.Hybrid.Wpf/actions/workflows/ci.yml)
+[![Quality Gate](https://sonarcloud.io/api/project_badges/measure?project=CodeMaru-Dreamine_Dreamine.Hybrid.Wpf&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=CodeMaru-Dreamine_Dreamine.Hybrid.Wpf)
+[![Security](https://sonarcloud.io/api/project_badges/measure?project=CodeMaru-Dreamine_Dreamine.Hybrid.Wpf&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=CodeMaru-Dreamine_Dreamine.Hybrid.Wpf)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=CodeMaru-Dreamine_Dreamine.Hybrid.Wpf&metric=coverage)](https://sonarcloud.io/summary/new_code?id=CodeMaru-Dreamine_Dreamine.Hybrid.Wpf)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![.NET](https://img.shields.io/badge/.NET-8-512BD4)](https://dotnet.microsoft.com/)
+[![WPF](https://img.shields.io/badge/WPF-Windows-0078D4)](https://learn.microsoft.com/dotnet/desktop/wpf/)
+[![NuGet](https://img.shields.io/nuget/v/Dreamine.Hybrid.Wpf.svg)](https://www.nuget.org/packages/Dreamine.Hybrid.Wpf)
+[![Downloads](https://img.shields.io/nuget/dt/Dreamine.Hybrid.Wpf.svg)](https://www.nuget.org/packages/Dreamine.Hybrid.Wpf)
+[![문서](https://img.shields.io/badge/문서-dreamine.kr-2596BE)](https://dreamine.kr)
+[![가이드](https://img.shields.io/badge/가이드-dreamine.kr-2596BE)](https://dreamine.kr)
+[![플레이그라운드](https://img.shields.io/badge/플레이그라운드-dreamine.kr-6F42C1)](https://dreamine.kr)
+[![도서](https://img.shields.io/badge/도서-실전_MVVM_아키텍처-black)](https://dreamine.kr)
+
 **WPF 애플리케이션 안에 Blazor UI를 임베드**하기 위한  
 **BlazorWebView(WebView2) 기반 하이브리드 호스팅 레이어**입니다.  
 Dreamine 아키텍처의 "WPF Shell + Blazor 화면" 조합을 **명시적(Explicit) 방식**으로 구현하는 데 초점을 둡니다.
