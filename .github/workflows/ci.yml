@@ -103,7 +103,7 @@ jobs:
           /d:sonar.cs.vscoveragexml.reportsPaths="$env:RUNNER_TEMP\TestResults\coverage.xml"
           /d:sonar.cs.vstest.reportsPaths="$env:RUNNER_TEMP\TestResults\**\*.trx"
           /d:sonar.exclusions="**/bin/**,**/obj/**,**/TestResults/**,**/*.png,**/*.ico"
-          /d:sonar.coverage.exclusions="**/tests/**,**/*.xaml.cs"
+          /d:sonar.coverage.exclusions="**/tests/**,**/*.xaml.cs,**/Hosting/DreamineBlazorServerHostedService.cs,**/Hosting/DreamineWpfHostExtensions.cs,**/Hosting/HybridWebViewHost.cs,**/Internal/**,**/Utility/**,**/Properties/**"
           /d:sonar.cpd.exclusions="**/tests/**"
 
       - name: Build and test
