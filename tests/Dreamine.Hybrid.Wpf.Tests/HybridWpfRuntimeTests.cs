@@ -1,10 +1,12 @@
 using System.Globalization;
+using System.IO;
 using System.Windows;
 using Dreamine.Hybrid.Interfaces;
 using Dreamine.Hybrid.Messaging;
 using Dreamine.Hybrid.Wpf.Converters;
 using Dreamine.Hybrid.Wpf.DependencyInjection;
 using Dreamine.Hybrid.Wpf.Hosting;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -135,6 +137,34 @@ public sealed class HybridWpfRuntimeTests
         Assert.False(options.AllowDisposableSharedServices);
         Assert.Empty(options.SharedServiceTypes);
         Assert.Equal(32, options.InstanceId.Length);
+    }
+
+    [Fact]
+    public void Host_options_add_physical_static_files_to_pipeline()
+    {
+        var directory = Path.Combine(Path.GetTempPath(), $"dreamine-hybrid-{Guid.NewGuid():N}");
+        var previousCallbackInvoked = false;
+        var options = new DreamineBlazorServerHostOptions
+        {
+            ConfigurePipeline = _ => previousCallbackInvoked = true,
+        };
+
+        try
+        {
+            var result = options.AddPhysicalStaticFiles(directory, "/assets");
+            var app = WebApplication.CreateBuilder().Build();
+
+            options.ConfigurePipeline!(app);
+
+            Assert.Same(options, result);
+            Assert.True(previousCallbackInvoked);
+            Assert.True(Directory.Exists(directory));
+        }
+        finally
+        {
+            if (Directory.Exists(directory))
+                Directory.Delete(directory, recursive: true);
+        }
     }
 
     private sealed class TestComponent : ComponentBase;
